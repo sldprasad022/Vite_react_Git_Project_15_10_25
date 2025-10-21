@@ -7,6 +7,8 @@ const MainRoute = () => {
    <>
        <Routes>
             <Route path="/" element={<Homepage/>}/>
+           <Route path="/home" element={<Home />} />
+        <Route path="/about" element={<About />} />
        </Routes>
    </>
   )

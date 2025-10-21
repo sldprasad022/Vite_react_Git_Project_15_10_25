@@ -9,7 +9,7 @@ const Sidebar = () => {
     const sidebarData =[
         {
            id :1,
-           label :'Home',
+           label :'Home Page',
            icon: <FaHome className='text-xl lg:text-2xl' />,   // ✅ just the component reference
            to:'/' 
         },
@@ -17,7 +17,7 @@ const Sidebar = () => {
            id :2,
            label :'About',
            icon: <FaRegNewspaper className='text-xl lg:text-2xl' />,   // ✅ just the component reference
-           to:'/' 
+           to:'/about' 
         },
         {
            id :3,
