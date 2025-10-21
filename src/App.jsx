@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import './App.css'
+import MainRoute from './MainRoute'
 
 function App() {
 
   return (
     <>
-      <h1>React</h1>
+      <MainRoute/>
     </>
   )
 }
