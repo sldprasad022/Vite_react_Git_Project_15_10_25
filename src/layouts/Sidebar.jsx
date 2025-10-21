@@ -11,19 +11,19 @@ const Sidebar = () => {
            id :1,
            label :'Home Page',
            icon: <FaHome className='text-xl lg:text-2xl' />,   // ✅ just the component reference
-           to:'/' 
+           path:'/' 
         },
         {
            id :2,
            label :'About',
            icon: <FaRegNewspaper className='text-xl lg:text-2xl' />,   // ✅ just the component reference
-           to:'/about' 
+           path:'/about' 
         },
         {
            id :3,
-           label :'Log out',
+           label :'Home',
            icon: <TbLogout className='text-xl lg:text-2xl' />,   // ✅ just the component reference
-           to:'/' 
+           path:'/home' 
         },
     ]
 
@@ -41,7 +41,7 @@ const Sidebar = () => {
                                     {eachObject.label}  
                                 </button>
                             ):(
-                               <NavLink className='flex items-center gap-2 p-2'>
+                               <NavLink to={eachObject.path} className='flex items-center gap-2 p-2' >
                                     {eachObject.icon}
                                     {eachObject.label}    
                                </NavLink> 
