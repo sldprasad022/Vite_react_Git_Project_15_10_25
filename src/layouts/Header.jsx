@@ -6,7 +6,7 @@ const Header = ({toggleSidebar}) => {
         <div className='p-4 bg-blue-800 flex justify-between items-center' >
            <button onClick={toggleSidebar}>
                 <h1 className='text-xl font-medium text-white'>Techpixe</h1>
-                <h1>Acccuwise tech</h1>
+                <h1>Acccu</h1>
            </button>
         </div>
     </>
