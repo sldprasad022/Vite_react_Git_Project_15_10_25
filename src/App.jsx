@@ -4,6 +4,7 @@ import { ChevronRight, Package, Filter, ShoppingCart, Check, X, AlertCircle, Plu
 import Home from './components/home';
 import About from './components/about';
 import Profile from './components/profile';
+import Contact from './components/contact';
 
 const MultiDomainSimulation = () => {
   return (
@@ -12,6 +13,7 @@ const MultiDomainSimulation = () => {
       <Route path="/home" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/contact" element={<Contact />} />
     </Routes>
   );
 };
