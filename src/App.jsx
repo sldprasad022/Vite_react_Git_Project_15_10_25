@@ -6,6 +6,7 @@ import About from './components/about';
 import Profile from './components/profile';
 import Contact from './components/contact';
 import Services from './components/services';
+import Portfolio from './components/portfolio';
 
 const MultiDomainSimulation = () => {
   return (
@@ -16,6 +17,7 @@ const MultiDomainSimulation = () => {
       <Route path="/profile" element={<Profile />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/services" element={<Services />} />
+      <Route path="/portfolio" element={<Portfolio />} />
     </Routes>
   );
 };
