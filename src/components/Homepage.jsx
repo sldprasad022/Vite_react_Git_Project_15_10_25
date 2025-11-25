@@ -17,6 +17,7 @@ const Homepage = () => {
                 <Sidebar/>
             </div>
             <div className={`${isSidebarOpen ? 'w-10/12' :'w-full'}`}>
+            <p> this pages defines about home page</p>
                 <Outlet/>
             </div>
         </div>
