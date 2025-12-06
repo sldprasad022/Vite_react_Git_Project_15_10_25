@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ChevronRight, Package, Filter, ShoppingCart, Check, X, AlertCircle, Plus, Zap } from 'lucide-react';
 import Home from './components/home';
@@ -8,32 +8,8 @@ import Contact from './components/contact';
 import Services from './components/services';
 import Portfolio from './components/portfolio';
 
-const MultiDomainSimulation = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<MultiDomainSimulationContent />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/services" element={<Services />} />
-      <Route path="/portfolio" element={<Portfolio />} />
-    </Routes>
-  );
-};
-
-const MultiDomainSimulationContent = () => {
-  const [activeTab, setActiveTab] = useState('setup');
-  const [selectedDomain, setSelectedDomain] = useState('fashion');
-  const [adminStep, setAdminStep] = useState(0);
-  const [vendorStep, setVendorStep] = useState(0);
-  const [userStep, setUserStep] = useState(0);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [cart, setCart] = useState([]);
-  const [orderPlaced, setOrderPlaced] = useState(false);
-  
-  // Multi-domain data structure
-  const domains = {
+// Move static data outside component to avoid recreation on each render
+const DOMAINS = {
     fashion: {
       name: 'Fashion Store',
       color: 'pink',
@@ -157,30 +133,54 @@ const MultiDomainSimulationContent = () => {
     }
   };
 
-  const currentDomain = domains[selectedDomain];
-  const currentProduct = currentDomain.products[0];
+const MultiDomainSimulation = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<MultiDomainSimulationContent />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/services" element={<Services />} />
+      <Route path="/portfolio" element={<Portfolio />} />
+    </Routes>
+  );
+};
 
-  const addToCart = (product, variant) => {
-    setCart([...cart, { product, variant, quantity: 1 }]);
-  };
+const MultiDomainSimulationContent = () => {
+  const [activeTab, setActiveTab] = useState('setup');
+  const [selectedDomain, setSelectedDomain] = useState('fashion');
+  const [adminStep, setAdminStep] = useState(0);
+  const [vendorStep, setVendorStep] = useState(0);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cart, setCart] = useState([]);
+  const [orderPlaced, setOrderPlaced] = useState(false);
+  
+  // Memoize current domain to avoid recalculation
+  const currentDomain = useMemo(() => DOMAINS[selectedDomain], [selectedDomain]);
+  const currentProduct = useMemo(() => currentDomain.products[0], [currentDomain]);
 
-  const placeOrder = () => {
+  // Optimize cart operations with useCallback
+  const addToCart = useCallback((product, variant) => {
+    setCart(prevCart => [...prevCart, { product, variant, quantity: 1 }]);
+  }, []);
+
+  const placeOrder = useCallback(() => {
     setOrderPlaced(true);
     // Simulate inventory deduction
     cart.forEach(item => {
       const variant = currentProduct.variants.find(v => v.id === item.variant.id);
       if (variant) variant.stock -= item.quantity;
     });
-  };
+  }, [cart, currentProduct.variants]);
 
-  const resetSimulation = () => {
+  const resetSimulation = useCallback(() => {
     setAdminStep(0);
     setVendorStep(0);
-    setUserStep(0);
     setCart([]);
     setOrderPlaced(false);
     setSelectedProduct(null);
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
@@ -204,7 +204,7 @@ const MultiDomainSimulationContent = () => {
         <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
           <h2 className="text-xl font-bold mb-4 text-slate-800">Select Domain</h2>
           <div className="grid grid-cols-3 gap-4">
-            {Object.entries(domains).map(([key, domain]) => (
+            {Object.entries(DOMAINS).map(([key, domain]) => (
               <button
                 key={key}
                 onClick={() => {
@@ -605,7 +605,7 @@ const MultiDomainSimulationContent = () => {
                           }`}
                         >
                           <div className="font-medium mb-2">
-                            {Object.entries(variant.attrs).map(([k, v]) => v).join(' • ')}
+                            {Object.entries(variant.attrs).map(([, v]) => v).join(' • ')}
                           </div>
                           <div className="text-sm text-slate-600">SKU: {variant.sku}</div>
                           <div className={`text-sm font-medium mt-2 ${
